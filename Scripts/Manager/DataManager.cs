@@ -16,7 +16,7 @@ public class DataManager
     private Dictionary<int, RewardItemData> dicRewardItemData;
     private Dictionary<int, CurrencyData> dicCurrencyData;
     private Dictionary<int, DailyRewardData> dicDailyRewardData;
-
+    private Dictionary<int, StageData> dicStageData;
 
     //test
     private Dictionary<string, Dictionary<int, RawData>> dic = new Dictionary<string, Dictionary<int, RawData>>();
@@ -32,6 +32,34 @@ public class DataManager
     public ShopData GetShopData(int id)
     {
         return this.dicShopData[id];
+    }
+
+    public int GetStageId(int stageNum)
+    {
+        var data = this.dicStageData.Values.ToList().Find(x => x.stage_num == stageNum);
+        if (data != null)
+            return data.id;
+
+        return -1;  //없다면 
+    }
+    public IEnumerable<StageData> GetStageDatas()
+    {
+        return this.dicStageData.Values;
+    }
+
+    public int GetStageDataCount()
+    {
+        return this.dicStageData.Count;
+    }
+
+    public void LoadStageData()
+    {
+        var asset = Resources.Load<TextAsset>("Data/stage_data");
+        var json = asset.text;
+        //역직렬화 
+        var arr = JsonConvert.DeserializeObject<StageData[]>(json);
+        this.dicStageData = arr.ToDictionary(x => x.id);
+        Debug.Log("load complete stage data");
     }
 
     public void LoadShopData() {

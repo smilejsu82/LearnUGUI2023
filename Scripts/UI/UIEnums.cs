@@ -27,5 +27,9 @@ public class UIEnums
         Currency = 300
     }
 
-    
+    public enum eStageCellViewState
+    { 
+        Open, Complete, Lock 
+    }
+
 }
